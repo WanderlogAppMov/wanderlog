@@ -11,19 +11,14 @@ import java.util.List;
 public class GetHotelsQueryService {
 
     @Autowired
-    private HotelRepository hotelRepository;
+    private HotelRepository hotelsRepository;
 
     public List<Hotel> getAllHotels() {
-        return hotelRepository.findAll();
+        return hotelsRepository.findAll();
     }
 
-    // Obtener hoteles por ID de continente
-    public List<Hotel> getHotelsByContinentId(Integer continentId) {
-        return hotelRepository.findByContinentContinentID(continentId);
-    }
-
-    // Obtener hoteles por nombre de continente
-    public List<Hotel> getHotelsByContinentName(String continentName) {
-        return hotelRepository.findByContinentContinentName(continentName);
+    public Hotel getHotelById(Integer id) {
+        return hotelsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
     }
 }

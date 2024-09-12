@@ -1,11 +1,11 @@
 package org.hign.platform.wanderlog.TravelPackages.domain.model.aggregates;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import org.hign.platform.wanderlog.Attractions.domain.model.aggregates.Attractions;
+import org.hign.platform.wanderlog.Flights.domain.model.aggregates.Flight;
+import org.hign.platform.wanderlog.Hotels.domain.model.aggregates.Hotel;
+import org.hign.platform.wanderlog.Restaurants.domain.model.aggregates.Restaurant;
+import org.hign.platform.wanderlog.TravelAgencies.domain.model.aggregates.TravelAgencies;
 
 import java.math.BigDecimal;
 
@@ -20,17 +20,31 @@ public class TravelPackages {
     @Column(nullable = false, length = 255)
     private String destination;
 
-    @Lob
-    private String transportationDetails;
+    @ManyToOne
+    @JoinColumn(name = "hotelId", nullable = false)
+    private Hotel hotel;
 
-    @Lob
-    private String accommodationDetails;
+    @ManyToOne
+    @JoinColumn(name = "restaurantId", nullable = false)
+    private Restaurant restaurant;
 
-    @Lob
-    private String activitiesDetails;
+    @ManyToOne
+    @JoinColumn(name = "flightId", nullable = false)
+    private Flight flight;
+
+    @ManyToOne
+    @JoinColumn(name = "attractionId", nullable = false)
+    private Attractions attraction;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal pricePerStudent;
+
+    @ManyToOne
+    @JoinColumn(name = "agencyId", nullable = false)
+    private TravelAgencies agency;
+
+    @Column(nullable = false, length = 100)
+    private String continent;
 
     // Getters and Setters
 
@@ -50,28 +64,36 @@ public class TravelPackages {
         this.destination = destination;
     }
 
-    public String getTransportationDetails() {
-        return transportationDetails;
+    public Hotel getHotel() {
+        return hotel;
     }
 
-    public void setTransportationDetails(String transportationDetails) {
-        this.transportationDetails = transportationDetails;
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 
-    public String getAccommodationDetails() {
-        return accommodationDetails;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setAccommodationDetails(String accommodationDetails) {
-        this.accommodationDetails = accommodationDetails;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
-    public String getActivitiesDetails() {
-        return activitiesDetails;
+    public Flight getFlight() {
+        return flight;
     }
 
-    public void setActivitiesDetails(String activitiesDetails) {
-        this.activitiesDetails = activitiesDetails;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
+    public Attractions getAttraction() {
+        return attraction;
+    }
+
+    public void setAttraction(Attractions attraction) {
+        this.attraction = attraction;
     }
 
     public BigDecimal getPricePerStudent() {
@@ -80,5 +102,21 @@ public class TravelPackages {
 
     public void setPricePerStudent(BigDecimal pricePerStudent) {
         this.pricePerStudent = pricePerStudent;
+    }
+
+    public TravelAgencies getAgency() {
+        return agency;
+    }
+
+    public void setAgency(TravelAgencies agency) {
+        this.agency = agency;
+    }
+
+    public String getContinent() {
+        return continent;
+    }
+
+    public void setContinent(String continent) {
+        this.continent = continent;
     }
 }
