@@ -38,6 +38,17 @@ public class HotelController {
         }
     }
 
+    // GET hotels by continent ID (opcional)
+    @GetMapping("/continent/{continentId}")
+    public ResponseEntity<List<Hotel>> getHotelsByContinent(@PathVariable Integer continentId) {
+        try {
+            List<Hotel> hotels = getHotelsQueryService.getHotelsByContinentId(continentId);
+            return new ResponseEntity<>(hotels, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     // POST new hotel
     @PostMapping
     public ResponseEntity<String> addHotel(@RequestBody AddHotelCommand command) {
@@ -70,4 +81,27 @@ public class HotelController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // GET hotels by city
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<Hotel>> getHotelsByCity(@PathVariable String city) {
+        try {
+            List<Hotel> hotels = getHotelsQueryService.getHotelsByCity(city);
+            return new ResponseEntity<>(hotels, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // GET hotels by country
+    @GetMapping("/country/{country}")
+    public ResponseEntity<List<Hotel>> getHotelsByCountry(@PathVariable String country) {
+        try {
+            List<Hotel> hotels = getHotelsQueryService.getHotelsByCountry(country);
+            return new ResponseEntity<>(hotels, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

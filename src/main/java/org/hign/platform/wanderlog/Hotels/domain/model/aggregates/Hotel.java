@@ -1,5 +1,6 @@
 package org.hign.platform.wanderlog.Hotels.domain.model.aggregates;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hign.platform.wanderlog.Continents.domain.model.aggregates.Continent;
@@ -31,6 +32,10 @@ public class Hotel {
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal pricePerNight;
+
+    @ManyToOne
+    @JoinColumn(name = "continent_id", nullable = false)
+    private Continent continent;
 
     // Getters and Setters
 
@@ -80,5 +85,13 @@ public class Hotel {
 
     public void setPricePerNight(BigDecimal pricePerNight) {
         this.pricePerNight = pricePerNight;
+    }
+
+    public Continent getContinent() {
+        return continent;
+    }
+
+    public void setContinent(Continent continent) {
+        this.continent = continent;
     }
 }

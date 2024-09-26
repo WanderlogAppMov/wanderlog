@@ -2,7 +2,6 @@ package org.hign.platform.wanderlog.Hotels.domain.model.commands;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hign.platform.wanderlog.Continents.domain.model.aggregates.Continent;
 
 import java.math.BigDecimal;
 
@@ -14,4 +13,5 @@ public class AddHotelCommand {
     private final String city;
     private final Integer stars;
     private final BigDecimal pricePerNight;
+    private final Integer continentId; // Agregamos el ID del continente
 }

@@ -21,4 +21,17 @@ public class GetHotelsQueryService {
         return hotelsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Hotel not found"));
     }
+
+    // Obtener hoteles por ID de continente
+    public List<Hotel> getHotelsByContinentId(Integer continentId) {
+        return hotelsRepository.findByContinent_ContinentID(continentId);
+    }
+
+    public List<Hotel> getHotelsByCity(String city) {
+        return hotelsRepository.findByCity(city);
+    }
+
+    public List<Hotel> getHotelsByCountry(String country) {
+        return hotelsRepository.findByCountry(country);
+    }
 }
