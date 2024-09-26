@@ -9,8 +9,11 @@ public class FlightResponse {
     private String departureCountry;
     private String arrivalCountry;
     private BigDecimal price;
+    private Integer continentId;
+    private String continentName;
 
     // Getters y Setters
+
     public Integer getFlightId() {
         return flightId;
     }
@@ -49,5 +52,21 @@ public class FlightResponse {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getContinentId() {
+        return continentId;
+    }
+
+    public void setContinentId(Integer continentId) {
+        this.continentId = continentId;
+    }
+
+    public String getContinentName() {
+        return continentName;
+    }
+
+    public void setContinentName(String continentName) {
+        this.continentName = continentName;
     }
 }

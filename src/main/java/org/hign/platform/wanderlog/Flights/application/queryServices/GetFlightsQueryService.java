@@ -24,4 +24,9 @@ public class GetFlightsQueryService {
     public List<Flight> getFlightsByArrivalCountry(String arrivalCountry) {
         return flightRepository.findByArrivalCountry(arrivalCountry);
     }
+
+    // Nuevo método para obtener vuelos por continentId
+    public List<Flight> getFlightsByContinentId(Integer continentId) {
+        return flightRepository.findByContinent_ContinentID(continentId);
+    }
 }

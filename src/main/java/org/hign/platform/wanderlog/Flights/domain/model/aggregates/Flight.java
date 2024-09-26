@@ -1,6 +1,7 @@
 package org.hign.platform.wanderlog.Flights.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import org.hign.platform.wanderlog.Continents.domain.model.aggregates.Continent;
 
 import java.math.BigDecimal;
 
@@ -17,7 +18,12 @@ public class Flight {
     private String arrivalCountry;
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name = "continent_id", nullable = false)  // FK para continent
+    private Continent continent;
+
     // Getters y Setters
+
     public Integer getFlightId() {
         return flightId;
     }
@@ -56,5 +62,13 @@ public class Flight {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Continent getContinent() {
+        return continent;
+    }
+
+    public void setContinent(Continent continent) {
+        this.continent = continent;
     }
 }

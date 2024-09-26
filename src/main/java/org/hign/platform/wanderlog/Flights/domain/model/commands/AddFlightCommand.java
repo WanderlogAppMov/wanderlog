@@ -8,16 +8,19 @@ public class AddFlightCommand {
     private String departureCountry;
     private String arrivalCountry;
     private BigDecimal price;
+    private Integer continentId;  // Nuevo campo
 
     // Constructor
-    public AddFlightCommand(String airline, String departureCountry, String arrivalCountry, BigDecimal price) {
+    public AddFlightCommand(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
         this.airline = airline;
         this.departureCountry = departureCountry;
         this.arrivalCountry = arrivalCountry;
         this.price = price;
+        this.continentId = continentId;
     }
 
     // Getters y Setters
+
     public String getAirline() {
         return airline;
     }
@@ -48,5 +51,13 @@ public class AddFlightCommand {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getContinentId() {
+        return continentId;
+    }
+
+    public void setContinentId(Integer continentId) {
+        this.continentId = continentId;
     }
 }

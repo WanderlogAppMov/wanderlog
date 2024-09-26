@@ -24,31 +24,46 @@ public class FlightController {
 
     @GetMapping
     public List<FlightResponse> getAllFlights() {
-        List<Flight> flights = getFlightsQueryService.getAllFlights();
-        return flights.stream().map(FlightResponseTransformer::transform).collect(Collectors.toList());
+        return getFlightsQueryService.getAllFlights()
+                .stream()
+                .map(FlightResponseTransformer::transform)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/departure/{departureCountry}")
     public List<FlightResponse> getFlightsByDepartureCountry(@PathVariable String departureCountry) {
-        List<Flight> flights = getFlightsQueryService.getFlightsByDepartureCountry(departureCountry);
-        return flights.stream().map(FlightResponseTransformer::transform).collect(Collectors.toList());
+        return getFlightsQueryService.getFlightsByDepartureCountry(departureCountry)
+                .stream()
+                .map(FlightResponseTransformer::transform)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/arrival/{arrivalCountry}")
     public List<FlightResponse> getFlightsByArrivalCountry(@PathVariable String arrivalCountry) {
-        List<Flight> flights = getFlightsQueryService.getFlightsByArrivalCountry(arrivalCountry);
+        return getFlightsQueryService.getFlightsByArrivalCountry(arrivalCountry)
+                .stream()
+                .map(FlightResponseTransformer::transform)
+                .collect(Collectors.toList());
+    }
+
+    // Nuevo GET para vuelos por continentId
+    @GetMapping("/continent/{continentId}")
+    public List<FlightResponse> getFlightsByContinentId(@PathVariable Integer continentId) {
+        List<Flight> flights = getFlightsQueryService.getFlightsByContinentId(continentId);
         return flights.stream().map(FlightResponseTransformer::transform).collect(Collectors.toList());
     }
 
     @PostMapping
     public FlightResponse addFlight(@RequestBody AddFlightCommand command) {
-        Flight flight = addFlightCommandService.addFlight(command.getAirline(), command.getDepartureCountry(), command.getArrivalCountry(), command.getPrice());
+        Flight flight = addFlightCommandService.addFlight(command.getAirline(), command.getDepartureCountry(),
+                command.getArrivalCountry(), command.getPrice(), command.getContinentId());
         return FlightResponseTransformer.transform(flight);
     }
 
     @PutMapping("/{flightId}")
     public FlightResponse updateFlight(@PathVariable Integer flightId, @RequestBody AddFlightCommand command) {
-        Flight flight = addFlightCommandService.updateFlight(flightId, command.getAirline(), command.getDepartureCountry(), command.getArrivalCountry(), command.getPrice());
+        Flight flight = addFlightCommandService.updateFlight(flightId, command.getAirline(), command.getDepartureCountry(),
+                command.getArrivalCountry(), command.getPrice(), command.getContinentId());
         return FlightResponseTransformer.transform(flight);
     }
 

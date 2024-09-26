@@ -1,6 +1,6 @@
 package org.hign.platform.wanderlog.Flights.application.commandServices;
 
-
+import org.hign.platform.wanderlog.Continents.infrastructure.persistence.jpa.repositories.ContinentRepository;
 import org.hign.platform.wanderlog.Flights.domain.model.aggregates.Flight;
 import org.hign.platform.wanderlog.Flights.infrastructure.persistence.jpa.repositories.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +14,38 @@ public class AddFlightCommandService {
     @Autowired
     private FlightRepository flightRepository;
 
-    public Flight addFlight(String airline, String departureCountry, String arrivalCountry, BigDecimal price) {
+    @Autowired
+    private ContinentRepository continentRepository;
+
+    public Flight addFlight(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
         Flight flight = new Flight();
         flight.setAirline(airline);
         flight.setDepartureCountry(departureCountry);
         flight.setArrivalCountry(arrivalCountry);
         flight.setPrice(price);
+
+        // Asignar el continente
+        flight.setContinent(continentRepository.findById(continentId)
+                .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
+
         return flightRepository.save(flight);
     }
 
-    // Método para actualizar un vuelo
-    public Flight updateFlight(Integer flightId, String airline, String departureCountry, String arrivalCountry, BigDecimal price) {
+    public Flight updateFlight(Integer flightId, String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
         return flightRepository.findById(flightId).map(flight -> {
             flight.setAirline(airline);
             flight.setDepartureCountry(departureCountry);
             flight.setArrivalCountry(arrivalCountry);
             flight.setPrice(price);
+
+            // Asignar el continente
+            flight.setContinent(continentRepository.findById(continentId)
+                    .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
+
             return flightRepository.save(flight);
         }).orElseThrow(() -> new IllegalArgumentException("Flight not found"));
     }
 
-    // Método para eliminar un vuelo
     public void deleteFlight(Integer flightId) {
         if (flightRepository.existsById(flightId)) {
             flightRepository.deleteById(flightId);

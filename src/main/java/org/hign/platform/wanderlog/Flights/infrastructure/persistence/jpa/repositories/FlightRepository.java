@@ -14,4 +14,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 
     // Búsqueda por país de llegada
     List<Flight> findByArrivalCountry(String arrivalCountry);
+
+    // Buscar vuelos por el continent_id
+    List<Flight> findByContinent_ContinentID(Integer continentId);
 }
