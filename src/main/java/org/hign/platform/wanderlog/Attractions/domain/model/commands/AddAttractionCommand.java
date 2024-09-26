@@ -12,4 +12,5 @@ public class AddAttractionCommand {
     private final String country;
     private final String city;
     private final BigDecimal ticketPrice;
+    private final Integer continentId;
 }

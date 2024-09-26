@@ -1,6 +1,7 @@
 package org.hign.platform.wanderlog.Attractions.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import org.hign.platform.wanderlog.Continents.domain.model.aggregates.Continent;
 
 import java.math.BigDecimal;
 
@@ -24,7 +25,12 @@ public class Attractions {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal ticketPrice;
 
-    // Getters and Setters
+    // Nueva relación con Continent
+    @ManyToOne
+    @JoinColumn(name = "continent_id", nullable = false)  // FK en la tabla de 'attractions'
+    private Continent continent;
+
+    // Getters y Setters
 
     public Integer getAttractionId() {
         return attractionId;
@@ -64,5 +70,13 @@ public class Attractions {
 
     public void setTicketPrice(BigDecimal ticketPrice) {
         this.ticketPrice = ticketPrice;
+    }
+
+    public Continent getContinent() {
+        return continent;
+    }
+
+    public void setContinent(Continent continent) {
+        this.continent = continent;
     }
 }

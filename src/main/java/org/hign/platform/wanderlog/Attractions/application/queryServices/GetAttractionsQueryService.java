@@ -21,4 +21,16 @@ public class GetAttractionsQueryService {
         return attractionsRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Attraction not found"));
     }
+
+    public List<Attractions> getAttractionsByContinentId(Integer continentId) {
+        return attractionsRepository.findByContinent_ContinentID(continentId);
+    }
+
+    public List<Attractions> getAttractionsByCity(String city) {
+        return attractionsRepository.findByCity(city);
+    }
+
+    public List<Attractions> getAttractionsByCountry(String country) {
+        return attractionsRepository.findByCountry(country);
+    }
 }

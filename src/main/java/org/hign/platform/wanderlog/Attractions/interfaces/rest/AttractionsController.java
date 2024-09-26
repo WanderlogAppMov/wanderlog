@@ -70,4 +70,32 @@ public class AttractionsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    //GET attractions por continentId
+    @GetMapping("/continent/{continentId}")
+    public List<Attractions> getAttractionsByContinentId(@PathVariable Integer continentId) {
+        return getAttractionsQueryService.getAttractionsByContinentId(continentId);
+    }
+
+    // GET attractions by city
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<Attractions>> getAttractionsByCity(@PathVariable String city) {
+        try {
+            List<Attractions> attractions = getAttractionsQueryService.getAttractionsByCity(city);
+            return new ResponseEntity<>(attractions, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // GET attractions by country
+    @GetMapping("/country/{country}")
+    public ResponseEntity<List<Attractions>> getAttractionsByCountry(@PathVariable String country) {
+        try {
+            List<Attractions> attractions = getAttractionsQueryService.getAttractionsByCountry(country);
+            return new ResponseEntity<>(attractions, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
