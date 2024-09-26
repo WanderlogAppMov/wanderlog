@@ -13,6 +13,12 @@ public class RestaurantResponseTransformer {
         response.setCity(restaurant.getCity());
         response.setCuisineType(restaurant.getCuisineType());
         response.setPriceRange(restaurant.getPriceRange());
+
+        // Aquí añadimos el continentId
+        if (restaurant.getContinent() != null) {
+            response.setContinentId(restaurant.getContinent().getContinentID());
+        }
+
         return response;
     }
 }

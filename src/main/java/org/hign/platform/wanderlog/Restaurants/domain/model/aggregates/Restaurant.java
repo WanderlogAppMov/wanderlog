@@ -1,6 +1,7 @@
 package org.hign.platform.wanderlog.Restaurants.domain.model.aggregates;
 
 import jakarta.persistence.*;
+import org.hign.platform.wanderlog.Continents.domain.model.aggregates.Continent;
 
 @Entity
 @Table(name = "restaurants")
@@ -11,11 +12,14 @@ public class Restaurant {
     private Integer restaurantId;
 
     private String restaurantName;
-
     private String country;
     private String city;
     private String cuisineType;
     private String priceRange;
+
+    @ManyToOne
+    @JoinColumn(name = "continent_id", nullable = false)  // FK hacia la tabla Continent
+    private Continent continent;
 
     // Getters y Setters
     public Integer getRestaurantId() {
@@ -64,5 +68,13 @@ public class Restaurant {
 
     public void setPriceRange(String priceRange) {
         this.priceRange = priceRange;
+    }
+
+    public Continent getContinent() {
+        return continent;
+    }
+
+    public void setContinent(Continent continent) {
+        this.continent = continent;
     }
 }

@@ -14,4 +14,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
 
     // Búsqueda por tipo de cocina
     List<Restaurant> findByCuisineType(String cuisineType);
+
+    // Búsqueda por ID de continente
+    List<Restaurant> findByContinent_ContinentID(Integer continentID);
+
+    // Búsqueda por país
+    List<Restaurant> findByCountry(String country);
 }

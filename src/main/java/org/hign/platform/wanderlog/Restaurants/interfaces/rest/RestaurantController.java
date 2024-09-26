@@ -42,24 +42,54 @@ public class RestaurantController {
         return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
     }
 
+    // Obtener restaurantes por continentId
+    @GetMapping("/continent/{continentId}")
+    public List<RestaurantResponse> getRestaurantsByContinentId(@PathVariable Integer continentId) {
+        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByContinentId(continentId);
+        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    }
+
     // POST para añadir un restaurante
     @PostMapping
     public RestaurantResponse addRestaurant(@RequestBody AddRestaurantCommand command) {
-        Restaurant restaurant = addRestaurantCommandService.addRestaurant(command.getRestaurantName(), command.getCountry(), command.getCity(), command.getCuisineType(), command.getPriceRange());
+        Restaurant restaurant = addRestaurantCommandService.addRestaurant(
+                command.getRestaurantName(),
+                command.getCountry(),
+                command.getCity(),
+                command.getCuisineType(),
+                command.getPriceRange(),
+                command.getContinentId()  // Asegurarse de pasar continentId
+        );
         return RestaurantResponseTransformer.transform(restaurant);
     }
 
     // PUT para actualizar un restaurante
     @PutMapping("/{restaurantId}")
     public RestaurantResponse updateRestaurant(@PathVariable Integer restaurantId, @RequestBody AddRestaurantCommand command) {
-        Restaurant restaurant = addRestaurantCommandService.updateRestaurant(restaurantId, command.getRestaurantName(), command.getCountry(), command.getCity(), command.getCuisineType(), command.getPriceRange());
+        Restaurant restaurant = addRestaurantCommandService.updateRestaurant(
+                restaurantId,
+                command.getRestaurantName(),
+                command.getCountry(),
+                command.getCity(),
+                command.getCuisineType(),
+                command.getPriceRange(),
+                command.getContinentId()  // Asegurarse de pasar continentId
+        );
         return RestaurantResponseTransformer.transform(restaurant);
     }
+
 
     // DELETE para eliminar un restaurante
     @DeleteMapping("/{restaurantId}")
     public String deleteRestaurant(@PathVariable Integer restaurantId) {
         addRestaurantCommandService.deleteRestaurant(restaurantId);
         return "Restaurant deleted successfully";
+    }
+
+    // Nuevo endpoint para buscar restaurantes por país
+    @GetMapping("/country/{country}")
+    public List<RestaurantResponse> getRestaurantsByCountry(@PathVariable String country) {
+        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByCountry(country);
+        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
     }
 }

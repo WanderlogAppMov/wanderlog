@@ -8,6 +8,7 @@ public class RestaurantResponse {
     private String city;
     private String cuisineType;
     private String priceRange;
+    private Integer continentId; // Nuevo campo para el ID del continente
 
     // Getters y Setters
     public Integer getRestaurantId() {
@@ -56,5 +57,13 @@ public class RestaurantResponse {
 
     public void setPriceRange(String priceRange) {
         this.priceRange = priceRange;
+    }
+
+    public Integer getContinentId() {
+        return continentId;
+    }
+
+    public void setContinentId(Integer continentId) {
+        this.continentId = continentId;
     }
 }
