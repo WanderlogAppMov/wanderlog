@@ -9,6 +9,7 @@ public class RestaurantResponse {
     private String cuisineType;
     private String priceRange;
     private Integer continentId; // Nuevo campo para el ID del continente
+    private String imageUrl; // Nuevo campo para la URL de la imagen
 
     // Getters y Setters
     public Integer getRestaurantId() {
@@ -65,5 +66,13 @@ public class RestaurantResponse {
 
     public void setContinentId(Integer continentId) {
         this.continentId = continentId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -8,15 +8,17 @@ public class AddRestaurantCommand {
     private String cuisineType;
     private String priceRange;
     private Integer continentId; // Agregar el campo continentId
+    private String imageUrl; // Agregar el campo imageUrl
 
     // Constructor
-    public AddRestaurantCommand(String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId) {
+    public AddRestaurantCommand(String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId, String imageUrl) {
         this.restaurantName = restaurantName;
         this.country = country;
         this.city = city;
         this.cuisineType = cuisineType;
         this.priceRange = priceRange;
         this.continentId = continentId;
+        this.imageUrl = imageUrl;
     }
 
     // Getters y Setters
@@ -66,5 +68,13 @@ public class AddRestaurantCommand {
 
     public void setContinentId(Integer continentId) {
         this.continentId = continentId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -14,4 +14,5 @@ public class AddHotelCommand {
     private final Integer stars;
     private final BigDecimal pricePerNight;
     private final Integer continentId; // Agregamos el ID del continente
+    private final String imageUrl; // Agregamos la URL de la imagen
 }

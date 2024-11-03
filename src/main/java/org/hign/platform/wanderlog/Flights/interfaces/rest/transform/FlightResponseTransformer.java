@@ -12,6 +12,7 @@ public class FlightResponseTransformer {
         response.setDepartureCountry(flight.getDepartureCountry());
         response.setArrivalCountry(flight.getArrivalCountry());
         response.setPrice(flight.getPrice());
+        response.setImageUrl(flight.getImageUrl());
 
         // Incluir información del continente
         if (flight.getContinent() != null) {

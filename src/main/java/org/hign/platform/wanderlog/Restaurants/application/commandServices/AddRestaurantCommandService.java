@@ -15,7 +15,8 @@ public class AddRestaurantCommandService {
     @Autowired
     private ContinentRepository continentRepository;
 
-    public Restaurant addRestaurant(String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId) {
+    // Modificación: Añadir el campo imageUrl
+    public Restaurant addRestaurant(String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId, String imageUrl) {
         Restaurant restaurant = new Restaurant();
         restaurant.setRestaurantName(restaurantName);
         restaurant.setCountry(country);
@@ -27,10 +28,14 @@ public class AddRestaurantCommandService {
         restaurant.setContinent(continentRepository.findById(continentId)
                 .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
 
+        // Asignar la URL de la imagen
+        restaurant.setImageUrl(imageUrl);
+
         return restaurantRepository.save(restaurant);
     }
 
-    public Restaurant updateRestaurant(Integer restaurantId, String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId) {
+    // Modificación: Añadir el campo imageUrl en la actualización
+    public Restaurant updateRestaurant(Integer restaurantId, String restaurantName, String country, String city, String cuisineType, String priceRange, Integer continentId, String imageUrl) {
         return restaurantRepository.findById(restaurantId).map(restaurant -> {
             restaurant.setRestaurantName(restaurantName);
             restaurant.setCountry(country);
@@ -41,6 +46,9 @@ public class AddRestaurantCommandService {
             // Asignar el continente en la actualización
             restaurant.setContinent(continentRepository.findById(continentId)
                     .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
+
+            // Asignar la URL de la imagen
+            restaurant.setImageUrl(imageUrl);
 
             return restaurantRepository.save(restaurant);
         }).orElseThrow(() -> new IllegalArgumentException("Restaurant not found"));

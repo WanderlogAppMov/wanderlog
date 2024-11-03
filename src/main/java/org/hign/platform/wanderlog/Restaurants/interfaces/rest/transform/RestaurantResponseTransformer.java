@@ -19,6 +19,8 @@ public class RestaurantResponseTransformer {
             response.setContinentId(restaurant.getContinent().getContinentID());
         }
 
+        response.setImageUrl(restaurant.getImageUrl());
+
         return response;
     }
 }

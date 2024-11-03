@@ -11,6 +11,7 @@ public class HotelResponse {
     private int stars;
     private BigDecimal pricePerNight;
 
+
     // Getters y Setters
 
     public Integer getHotelId() {

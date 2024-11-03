@@ -58,7 +58,8 @@ public class RestaurantController {
                 command.getCity(),
                 command.getCuisineType(),
                 command.getPriceRange(),
-                command.getContinentId()  // Asegurarse de pasar continentId
+                command.getContinentId(), // Asegurarse de pasar continentId
+                command.getImageUrl()  // Asegurarse de pasar imageUrl
         );
         return RestaurantResponseTransformer.transform(restaurant);
     }
@@ -73,7 +74,8 @@ public class RestaurantController {
                 command.getCity(),
                 command.getCuisineType(),
                 command.getPriceRange(),
-                command.getContinentId()  // Asegurarse de pasar continentId
+                command.getContinentId(),  // Asegurarse de pasar continentId
+                command.getImageUrl()  // Asegurarse de pasar imageUrl
         );
         return RestaurantResponseTransformer.transform(restaurant);
     }

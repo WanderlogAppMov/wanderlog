@@ -24,12 +24,17 @@ public class AddAttractionCommandService {
         attraction.setCity(command.getCity());
         attraction.setTicketPrice(command.getTicketPrice());
 
+        // Establece el continente basado en el ID
         Continent continent = continentRepository.findById(command.getContinentId())
                 .orElseThrow(() -> new IllegalArgumentException("Continent not found"));
         attraction.setContinent(continent);
 
+        // Establece la URL de la imagen
+        attraction.setImageUrl(command.getImageUrl());
+
         return attractionsRepository.save(attraction);
     }
+
 
 
     public Attractions updateAttraction(Integer id, AddAttractionCommand command) {

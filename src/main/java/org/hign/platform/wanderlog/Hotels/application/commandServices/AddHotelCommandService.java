@@ -28,6 +28,9 @@ public class AddHotelCommandService {
         hotel.setContinent(continentRepository.findById(command.getContinentId())
                 .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
 
+        // Asignar la URL de la imagen
+        hotel.setImageUrl(command.getImageUrl());
+
         return hotelsRepository.save(hotel);
     }
 
@@ -44,6 +47,9 @@ public class AddHotelCommandService {
         // Asignar continente usando el ID proporcionado
         hotel.setContinent(continentRepository.findById(command.getContinentId())
                 .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
+
+        // Asignar la URL de la imagen
+        hotel.setImageUrl(command.getImageUrl());
 
         return hotelsRepository.save(hotel);
     }
