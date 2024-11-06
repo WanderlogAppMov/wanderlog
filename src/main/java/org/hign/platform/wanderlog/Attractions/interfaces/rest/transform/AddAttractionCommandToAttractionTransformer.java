@@ -13,6 +13,7 @@ public class AddAttractionCommandToAttractionTransformer {
         attraction.setCountry(command.getCountry());
         attraction.setCity(command.getCity());
         attraction.setTicketPrice(command.getTicketPrice());
+        attraction.setImageUrl(command.getImageUrl());
         return attraction;
     }
 }

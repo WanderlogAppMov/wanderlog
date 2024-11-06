@@ -22,6 +22,10 @@ public class Flight {
     @JoinColumn(name = "continent_id", nullable = false)  // FK para continent
     private Continent continent;
 
+    // Nuevo campo para la URL de la imagen
+    @Column(length = 500)
+    private String imageUrl;
+
     // Getters y Setters
 
     public Integer getFlightId() {
@@ -70,5 +74,13 @@ public class Flight {
 
     public void setContinent(Continent continent) {
         this.continent = continent;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

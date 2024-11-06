@@ -17,7 +17,7 @@ public class AddFlightCommandService {
     @Autowired
     private ContinentRepository continentRepository;
 
-    public Flight addFlight(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
+    public Flight addFlight(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId, String imageUrl) {
         Flight flight = new Flight();
         flight.setAirline(airline);
         flight.setDepartureCountry(departureCountry);
@@ -28,10 +28,13 @@ public class AddFlightCommandService {
         flight.setContinent(continentRepository.findById(continentId)
                 .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
 
+        // Asignar la URL de la imagen
+        flight.setImageUrl(imageUrl);
+
         return flightRepository.save(flight);
     }
 
-    public Flight updateFlight(Integer flightId, String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
+    public Flight updateFlight(Integer flightId, String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId, String imageUrl) {
         return flightRepository.findById(flightId).map(flight -> {
             flight.setAirline(airline);
             flight.setDepartureCountry(departureCountry);
@@ -41,6 +44,9 @@ public class AddFlightCommandService {
             // Asignar el continente
             flight.setContinent(continentRepository.findById(continentId)
                     .orElseThrow(() -> new IllegalArgumentException("Continent not found")));
+
+            // Asignar la URL de la imagen
+            flight.setImageUrl(imageUrl);
 
             return flightRepository.save(flight);
         }).orElseThrow(() -> new IllegalArgumentException("Flight not found"));

@@ -55,15 +55,17 @@ public class FlightController {
 
     @PostMapping
     public FlightResponse addFlight(@RequestBody AddFlightCommand command) {
+        // Agregar el campo imageUrl en la llamada a addFlight
         Flight flight = addFlightCommandService.addFlight(command.getAirline(), command.getDepartureCountry(),
-                command.getArrivalCountry(), command.getPrice(), command.getContinentId());
+                command.getArrivalCountry(), command.getPrice(), command.getContinentId(), command.getImageUrl());
         return FlightResponseTransformer.transform(flight);
     }
 
     @PutMapping("/{flightId}")
     public FlightResponse updateFlight(@PathVariable Integer flightId, @RequestBody AddFlightCommand command) {
+        // Agregar el campo imageUrl en la llamada a updateFlight
         Flight flight = addFlightCommandService.updateFlight(flightId, command.getAirline(), command.getDepartureCountry(),
-                command.getArrivalCountry(), command.getPrice(), command.getContinentId());
+                command.getArrivalCountry(), command.getPrice(), command.getContinentId(), command.getImageUrl());
         return FlightResponseTransformer.transform(flight);
     }
 

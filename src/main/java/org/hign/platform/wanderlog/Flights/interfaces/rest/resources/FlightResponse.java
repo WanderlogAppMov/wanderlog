@@ -11,6 +11,7 @@ public class FlightResponse {
     private BigDecimal price;
     private Integer continentId;
     private String continentName;
+    private String imageUrl;
 
     // Getters y Setters
 
@@ -68,5 +69,13 @@ public class FlightResponse {
 
     public void setContinentName(String continentName) {
         this.continentName = continentName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

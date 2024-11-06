@@ -21,6 +21,10 @@ public class Restaurant {
     @JoinColumn(name = "continent_id", nullable = false)  // FK hacia la tabla Continent
     private Continent continent;
 
+    // Nuevo campo para la URL de la imagen
+    @Column(length = 500)
+    private String imageUrl;
+
     // Getters y Setters
     public Integer getRestaurantId() {
         return restaurantId;
@@ -76,5 +80,13 @@ public class Restaurant {
 
     public void setContinent(Continent continent) {
         this.continent = continent;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

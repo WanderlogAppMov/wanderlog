@@ -30,6 +30,10 @@ public class Attractions {
     @JoinColumn(name = "continent_id", nullable = false)  // FK en la tabla de 'attractions'
     private Continent continent;
 
+    // Nuevo campo para la URL de la imagen
+    @Column(length = 500)
+    private String imageUrl;
+
     // Getters y Setters
 
     public Integer getAttractionId() {
@@ -78,5 +82,13 @@ public class Attractions {
 
     public void setContinent(Continent continent) {
         this.continent = continent;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -9,14 +9,16 @@ public class AddFlightCommand {
     private String arrivalCountry;
     private BigDecimal price;
     private Integer continentId;  // Nuevo campo
+    private String imageUrl;  // Nuevo campo
 
     // Constructor
-    public AddFlightCommand(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId) {
+    public AddFlightCommand(String airline, String departureCountry, String arrivalCountry, BigDecimal price, Integer continentId, String imageUrl) {
         this.airline = airline;
         this.departureCountry = departureCountry;
         this.arrivalCountry = arrivalCountry;
         this.price = price;
         this.continentId = continentId;
+        this.imageUrl = imageUrl;
     }
 
     // Getters y Setters
@@ -59,5 +61,13 @@ public class AddFlightCommand {
 
     public void setContinentId(Integer continentId) {
         this.continentId = continentId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
