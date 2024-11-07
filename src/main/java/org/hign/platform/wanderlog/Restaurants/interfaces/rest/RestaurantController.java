@@ -4,13 +4,10 @@ import org.hign.platform.wanderlog.Restaurants.application.commandServices.AddRe
 import org.hign.platform.wanderlog.Restaurants.application.queryServices.GetRestaurantsQueryService;
 import org.hign.platform.wanderlog.Restaurants.domain.model.aggregates.Restaurant;
 import org.hign.platform.wanderlog.Restaurants.domain.model.commands.AddRestaurantCommand;
-import org.hign.platform.wanderlog.Restaurants.interfaces.rest.resources.RestaurantResponse;
-import org.hign.platform.wanderlog.Restaurants.interfaces.rest.transform.RestaurantResponseTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -23,36 +20,32 @@ public class RestaurantController {
     private GetRestaurantsQueryService getRestaurantsQueryService;
 
     @GetMapping
-    public List<RestaurantResponse> getRestaurants() {
-        List<Restaurant> restaurants = getRestaurantsQueryService.getAllRestaurants();
-        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    public List<Restaurant> getRestaurants() {
+        return getRestaurantsQueryService.getAllRestaurants();
     }
 
     // Obtener restaurantes por ciudad
     @GetMapping("/city/{city}")
-    public List<RestaurantResponse> getRestaurantsByCity(@PathVariable String city) {
-        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByCity(city);
-        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    public List<Restaurant> getRestaurantsByCity(@PathVariable String city) {
+        return getRestaurantsQueryService.getRestaurantsByCity(city);
     }
 
     // Obtener restaurantes por tipo de cocina
     @GetMapping("/cuisine/{cuisineType}")
-    public List<RestaurantResponse> getRestaurantsByCuisineType(@PathVariable String cuisineType) {
-        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByCuisineType(cuisineType);
-        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    public List<Restaurant> getRestaurantsByCuisineType(@PathVariable String cuisineType) {
+        return getRestaurantsQueryService.getRestaurantsByCuisineType(cuisineType);
     }
 
     // Obtener restaurantes por continentId
     @GetMapping("/continent/{continentId}")
-    public List<RestaurantResponse> getRestaurantsByContinentId(@PathVariable Integer continentId) {
-        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByContinentId(continentId);
-        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    public List<Restaurant> getRestaurantsByContinentId(@PathVariable Integer continentId) {
+        return getRestaurantsQueryService.getRestaurantsByContinentId(continentId);
     }
 
     // POST para añadir un restaurante
     @PostMapping
-    public RestaurantResponse addRestaurant(@RequestBody AddRestaurantCommand command) {
-        Restaurant restaurant = addRestaurantCommandService.addRestaurant(
+    public Restaurant addRestaurant(@RequestBody AddRestaurantCommand command) {
+        return addRestaurantCommandService.addRestaurant(
                 command.getRestaurantName(),
                 command.getCountry(),
                 command.getCity(),
@@ -61,13 +54,12 @@ public class RestaurantController {
                 command.getContinentId(), // Asegurarse de pasar continentId
                 command.getImageUrl()  // Asegurarse de pasar imageUrl
         );
-        return RestaurantResponseTransformer.transform(restaurant);
     }
 
     // PUT para actualizar un restaurante
     @PutMapping("/{restaurantId}")
-    public RestaurantResponse updateRestaurant(@PathVariable Integer restaurantId, @RequestBody AddRestaurantCommand command) {
-        Restaurant restaurant = addRestaurantCommandService.updateRestaurant(
+    public Restaurant updateRestaurant(@PathVariable Integer restaurantId, @RequestBody AddRestaurantCommand command) {
+        return addRestaurantCommandService.updateRestaurant(
                 restaurantId,
                 command.getRestaurantName(),
                 command.getCountry(),
@@ -77,9 +69,7 @@ public class RestaurantController {
                 command.getContinentId(),  // Asegurarse de pasar continentId
                 command.getImageUrl()  // Asegurarse de pasar imageUrl
         );
-        return RestaurantResponseTransformer.transform(restaurant);
     }
-
 
     // DELETE para eliminar un restaurante
     @DeleteMapping("/{restaurantId}")
@@ -90,8 +80,7 @@ public class RestaurantController {
 
     // Nuevo endpoint para buscar restaurantes por país
     @GetMapping("/country/{country}")
-    public List<RestaurantResponse> getRestaurantsByCountry(@PathVariable String country) {
-        List<Restaurant> restaurants = getRestaurantsQueryService.getRestaurantsByCountry(country);
-        return restaurants.stream().map(RestaurantResponseTransformer::transform).collect(Collectors.toList());
+    public List<Restaurant> getRestaurantsByCountry(@PathVariable String country) {
+        return getRestaurantsQueryService.getRestaurantsByCountry(country);
     }
 }

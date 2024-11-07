@@ -4,8 +4,6 @@ import org.hign.platform.wanderlog.Flights.application.commandServices.AddFlight
 import org.hign.platform.wanderlog.Flights.application.queryServices.GetFlightsQueryService;
 import org.hign.platform.wanderlog.Flights.domain.model.aggregates.Flight;
 import org.hign.platform.wanderlog.Flights.domain.model.commands.AddFlightCommand;
-import org.hign.platform.wanderlog.Flights.interfaces.rest.resources.FlightResponse;
-import org.hign.platform.wanderlog.Flights.interfaces.rest.transform.FlightResponseTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,50 +21,36 @@ public class FlightController {
     private GetFlightsQueryService getFlightsQueryService;
 
     @GetMapping
-    public List<FlightResponse> getAllFlights() {
-        return getFlightsQueryService.getAllFlights()
-                .stream()
-                .map(FlightResponseTransformer::transform)
-                .collect(Collectors.toList());
+    public List<Flight> getAllFlights() {
+        return getFlightsQueryService.getAllFlights();
     }
 
     @GetMapping("/departure/{departureCountry}")
-    public List<FlightResponse> getFlightsByDepartureCountry(@PathVariable String departureCountry) {
-        return getFlightsQueryService.getFlightsByDepartureCountry(departureCountry)
-                .stream()
-                .map(FlightResponseTransformer::transform)
-                .collect(Collectors.toList());
+    public List<Flight> getFlightsByDepartureCountry(@PathVariable String departureCountry) {
+        return getFlightsQueryService.getFlightsByDepartureCountry(departureCountry);
     }
 
     @GetMapping("/arrival/{arrivalCountry}")
-    public List<FlightResponse> getFlightsByArrivalCountry(@PathVariable String arrivalCountry) {
-        return getFlightsQueryService.getFlightsByArrivalCountry(arrivalCountry)
-                .stream()
-                .map(FlightResponseTransformer::transform)
-                .collect(Collectors.toList());
+    public List<Flight> getFlightsByArrivalCountry(@PathVariable String arrivalCountry) {
+        return getFlightsQueryService.getFlightsByArrivalCountry(arrivalCountry);
     }
 
     // Nuevo GET para vuelos por continentId
     @GetMapping("/continent/{continentId}")
-    public List<FlightResponse> getFlightsByContinentId(@PathVariable Integer continentId) {
-        List<Flight> flights = getFlightsQueryService.getFlightsByContinentId(continentId);
-        return flights.stream().map(FlightResponseTransformer::transform).collect(Collectors.toList());
+    public List<Flight> getFlightsByContinentId(@PathVariable Integer continentId) {
+        return getFlightsQueryService.getFlightsByContinentId(continentId);
     }
 
     @PostMapping
-    public FlightResponse addFlight(@RequestBody AddFlightCommand command) {
-        // Agregar el campo imageUrl en la llamada a addFlight
-        Flight flight = addFlightCommandService.addFlight(command.getAirline(), command.getDepartureCountry(),
+    public Flight addFlight(@RequestBody AddFlightCommand command) {
+        return addFlightCommandService.addFlight(command.getAirline(), command.getDepartureCountry(),
                 command.getArrivalCountry(), command.getPrice(), command.getContinentId(), command.getImageUrl());
-        return FlightResponseTransformer.transform(flight);
     }
 
     @PutMapping("/{flightId}")
-    public FlightResponse updateFlight(@PathVariable Integer flightId, @RequestBody AddFlightCommand command) {
-        // Agregar el campo imageUrl en la llamada a updateFlight
-        Flight flight = addFlightCommandService.updateFlight(flightId, command.getAirline(), command.getDepartureCountry(),
+    public Flight updateFlight(@PathVariable Integer flightId, @RequestBody AddFlightCommand command) {
+        return addFlightCommandService.updateFlight(flightId, command.getAirline(), command.getDepartureCountry(),
                 command.getArrivalCountry(), command.getPrice(), command.getContinentId(), command.getImageUrl());
-        return FlightResponseTransformer.transform(flight);
     }
 
     @DeleteMapping("/{flightId}")
