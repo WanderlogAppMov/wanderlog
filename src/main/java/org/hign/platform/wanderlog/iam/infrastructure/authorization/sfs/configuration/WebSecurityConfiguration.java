@@ -107,12 +107,12 @@ public class WebSecurityConfiguration {
                         .requestMatchers(
                                 "/api/authentication/**",
                                 "/api/travelers/**",
-                                "/api/travelagencies/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
-                                "/webjars/**").permitAll()
+                                "/webjars/**")
+                        .permitAll()
                         .anyRequest().authenticated());
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);

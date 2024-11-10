@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/*
 @Service
 public class GetTravelersQueryService {
 
@@ -21,4 +21,4 @@ public class GetTravelersQueryService {
         return travelersRepository.findById(travelerId)
                 .orElseThrow(() -> new IllegalArgumentException("Traveler not found"));
     }
-}
+}*/

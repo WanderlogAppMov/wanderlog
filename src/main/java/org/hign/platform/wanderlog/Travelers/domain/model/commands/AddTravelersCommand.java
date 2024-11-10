@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.hign.platform.wanderlog.Travelers.domain.model.aggregates.Travelers;
 
 import java.util.Date;
-
+/*
 @Getter
 @AllArgsConstructor
 public class AddTravelersCommand {
@@ -22,3 +22,4 @@ public class AddTravelersCommand {
     private final String postalCode;
     private final String country;
 }
+*/

@@ -1,14 +1,14 @@
 package org.hign.platform.wanderlog.Travelers.application.commandServices;
 
 import org.hign.platform.wanderlog.Travelers.domain.model.aggregates.Travelers;
-import org.hign.platform.wanderlog.Travelers.domain.model.commands.AddTravelersCommand;
+//import org.hign.platform.wanderlog.Travelers.domain.model.commands.AddTravelersCommand;
 import org.hign.platform.wanderlog.Travelers.infrastructure.persistence.jpa.repositories.TravelersRepository;
-import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.AddTravelersCommandToUserTransformer;
+//import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.AddTravelersCommandToUserTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+/*
 @Service
 public class AddTravelersCommandService {
 
@@ -41,4 +41,4 @@ public class AddTravelersCommandService {
     public void deleteTraveler(Integer travelerId) {
         travelersRepository.deleteById(travelerId);
     }
-}
+}*/

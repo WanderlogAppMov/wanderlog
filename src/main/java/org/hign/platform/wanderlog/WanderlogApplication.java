@@ -12,21 +12,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-//@EnableJpaAuditing
 @SpringBootApplication
+@EnableJpaAuditing
 public class WanderlogApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WanderlogApplication.class, args);
     }
 
-    @Bean
+
+    /*@Bean
     public OpenAPI customOpenAPI() {
-        /*return new OpenAPI()
+        *//*return new OpenAPI()
                 .info(new io.swagger.v3.oas.models.info.Info()
                         .title("Wanderlog API")
                         .version("1.0")
-                        .description("Wanderlog API"));*/
+                        .description("Wanderlog API"));*//*
 
         var openApi = new OpenAPI();
         openApi.info(new Info()
@@ -53,6 +54,6 @@ public class WanderlogApplication {
                                         .bearerFormat("JWT")));
 
         return openApi;
-    }
+    }*/
 
 }

@@ -6,18 +6,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hign.platform.wanderlog.Travelers.domain.model.commands.CreateTravelerCommand;
+import org.hign.platform.wanderlog.Travelers.domain.model.valueobjects.TravelerProfile;
+import org.hign.platform.wanderlog.Travelers.domain.model.valueobjects.UserId;
 
 import java.util.Date;
 
+//@Table(name = "travelers")
 @Entity
-@Table(name = "travelers")
+@Getter
+@Setter
 public class Travelers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer travelerId;
 
-    @Column(nullable = false, length = 100)
+    @Embedded
+    private TravelerProfile travelerProfile;
+
+    @Embedded
+    private UserId userId;
+
+    public Travelers(CreateTravelerCommand command, UserId userId){
+        this.travelerProfile = new TravelerProfile(command.firstName(), command.lastName(), command.gender(), command.birthdate());
+        this.userId = userId;
+    }
+
+    public Travelers() {
+        this.travelerProfile = new TravelerProfile("", "", "", "");
+    }
+
+    /*@Column(nullable = false, length = 100)
     @NotNull(message = "First name is mandatory")
     private String firstName;
 
@@ -172,5 +194,5 @@ public class Travelers {
 
     public enum Gender {
         MALE, FEMALE, OTHER
-    }
+    }*/
 }
