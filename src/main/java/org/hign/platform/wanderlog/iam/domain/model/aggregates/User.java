@@ -1,43 +1,43 @@
 package org.hign.platform.wanderlog.iam.domain.model.aggregates;
 
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 import org.hign.platform.wanderlog.iam.domain.model.entities.Role;
+import org.hign.platform.wanderlog.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "users")
-public class User {
-    @Getter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+public class User extends AuditableAbstractAggregateRoot<User> {
 
     @NotBlank
-    @Getter
     @Size(max = 50)
     @Column(unique = true)
     private String username;
 
-    @Getter
     @NotBlank
     @Size(max = 120)
     private String password;
 
-    @Getter
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
 
     public User() {
         this.roles = new HashSet<>();
     }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -55,8 +55,16 @@ public class User {
     }
 
     public User addRoles(List<Role> roles) {
-        //var validatedRoles = Role.validateRoleSet(roles);
-        this.roles.addAll(roles);
+        var validatedRoleSet = Role.validateRoleSet(roles);
+        this.roles.addAll(validatedRoleSet);
         return this;
     }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles.clear();
+        if (roles != null) {
+            this.roles.addAll(roles);
+        }
+    }
+
 }

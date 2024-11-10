@@ -1,5 +1,6 @@
 package org.hign.platform.wanderlog.iam.interfaces.rest.transform;
 
+
 import org.hign.platform.wanderlog.iam.domain.model.aggregates.User;
 import org.hign.platform.wanderlog.iam.interfaces.rest.resources.AuthenticatedUserResource;
 
@@ -8,4 +9,3 @@ public class AuthenticatedUserResourceFromEntityAssembler {
         return new AuthenticatedUserResource(user.getId(), user.getUsername(), token);
     }
 }
-

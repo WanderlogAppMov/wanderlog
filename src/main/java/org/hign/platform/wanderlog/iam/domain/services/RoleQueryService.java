@@ -1,5 +1,6 @@
 package org.hign.platform.wanderlog.iam.domain.services;
 
+
 import org.hign.platform.wanderlog.iam.domain.model.entities.Role;
 import org.hign.platform.wanderlog.iam.domain.model.queries.GetAllRolesQuery;
 import org.hign.platform.wanderlog.iam.domain.model.queries.GetRoleByNameQuery;

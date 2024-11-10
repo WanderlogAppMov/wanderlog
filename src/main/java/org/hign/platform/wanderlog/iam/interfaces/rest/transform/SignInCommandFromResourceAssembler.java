@@ -1,5 +1,6 @@
 package org.hign.platform.wanderlog.iam.interfaces.rest.transform;
 
+
 import org.hign.platform.wanderlog.iam.domain.model.commands.SignInCommand;
 import org.hign.platform.wanderlog.iam.interfaces.rest.resources.SignInResource;
 
@@ -8,4 +9,3 @@ public class SignInCommandFromResourceAssembler {
         return new SignInCommand(signInResource.username(), signInResource.password());
     }
 }
-

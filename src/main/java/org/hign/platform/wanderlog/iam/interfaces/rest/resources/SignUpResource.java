@@ -1,4 +1,5 @@
-package org.hign.platform.wanderlog.iam.interfaces.rest.resources;
+package org.hign.platform.wanderlog.iam.interfaces.rest.resources;// SignUpResource
+
 
 import java.util.List;
 

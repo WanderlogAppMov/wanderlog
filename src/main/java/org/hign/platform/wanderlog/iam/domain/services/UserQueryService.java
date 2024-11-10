@@ -1,5 +1,7 @@
 package org.hign.platform.wanderlog.iam.domain.services;
 
+
+
 import org.hign.platform.wanderlog.iam.domain.model.aggregates.User;
 import org.hign.platform.wanderlog.iam.domain.model.queries.GetAllUsersQuery;
 import org.hign.platform.wanderlog.iam.domain.model.queries.GetUserByIdQuery;
@@ -12,4 +14,5 @@ public interface UserQueryService {
     List<User> handle(GetAllUsersQuery query);
     Optional<User> handle(GetUserByIdQuery query);
     Optional<User> handle(GetUserByUsernameQuery query);
+
 }

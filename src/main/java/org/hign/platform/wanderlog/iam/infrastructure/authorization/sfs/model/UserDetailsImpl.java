@@ -1,6 +1,8 @@
 package org.hign.platform.wanderlog.iam.infrastructure.authorization.sfs.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hign.platform.wanderlog.iam.domain.model.aggregates.User;
@@ -9,7 +11,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
+/**
+ * This class is responsible for providing the user details to the Spring Security framework.
+ * It implements the UserDetails interface.
+ */
 @Getter
 @EqualsAndHashCode
 public class UserDetailsImpl implements UserDetails {
@@ -23,8 +30,7 @@ public class UserDetailsImpl implements UserDetails {
     private final boolean enabled;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(String username, String password,
-                           Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
@@ -34,9 +40,20 @@ public class UserDetailsImpl implements UserDetails {
         this.enabled = true;
     }
 
+    /**
+     * This method is responsible for building the UserDetailsImpl object from the User object.
+     * @param user The user object.
+     * @return The UserDetailsImpl object.
+     */
     public static UserDetailsImpl build(User user) {
-        var authorities = user.getRoles().stream().map(role -> role.getName().name())
-                .map(SimpleGrantedAuthority::new).toList();
-        return new UserDetailsImpl(user.getUsername(), user.getPassword(), authorities);
+        var authorities = user.getRoles().stream()
+                .map(role -> role.getName().name())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return new UserDetailsImpl(
+                user.getUsername(),
+                user.getPassword(),
+                authorities);
     }
+
 }

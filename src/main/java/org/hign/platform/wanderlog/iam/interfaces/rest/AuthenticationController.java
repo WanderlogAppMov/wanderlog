@@ -1,7 +1,10 @@
 package org.hign.platform.wanderlog.iam.interfaces.rest;
 
+
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hign.platform.wanderlog.iam.domain.services.UserCommandService;
+import org.hign.platform.wanderlog.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 import org.hign.platform.wanderlog.iam.interfaces.rest.resources.AuthenticatedUserResource;
 import org.hign.platform.wanderlog.iam.interfaces.rest.resources.SignInResource;
 import org.hign.platform.wanderlog.iam.interfaces.rest.resources.SignUpResource;
@@ -18,16 +21,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+/**
+ * AuthenticationController
+ * <p>
+ *     This controller is responsible for handling authentication requests.
+ *     It exposes two endpoints:
+ *     <ul>
+ *         <li>POST /api/v1/auth/sign-in</li>
+ *         <li>POST /api/v1/auth/sign-up</li>
+ *     </ul>
+ * </p>
+ */
 @RestController
-@RequestMapping(value = "/api/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/v1/authentication", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Authentication", description = "Authentication Endpoints")
 public class AuthenticationController {
     private final UserCommandService userCommandService;
+    private final UserRepository userRepository;
 
-    public AuthenticationController(UserCommandService userCommandService) {
+    public AuthenticationController(UserCommandService userCommandService, UserRepository userRepository) {
         this.userCommandService = userCommandService;
+        this.userRepository = userRepository;
     }
 
+    /**
+     * Handles the sign-in request.
+     * @param signInResource the sign-in request body.
+     * @return the authenticated user resource.
+     */
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedUserResource> signIn(@RequestBody SignInResource signInResource) {
         var signInCommand = SignInCommandFromResourceAssembler.toCommandFromResource(signInResource);
@@ -39,6 +61,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticatedUserResource);
     }
 
+    /**
+     * Handles the sign-up request.
+     * @param signUpResource the sign-up request body.
+     * @return the created user resource.
+     */
     @PostMapping("/sign-up")
     public ResponseEntity<UserResource> signUp(@RequestBody SignUpResource signUpResource) {
         var signUpCommand = SignUpCommandFromResourceAssembler.toCommandFromResource(signUpResource);
@@ -46,7 +73,9 @@ public class AuthenticationController {
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
+        // Recuperar el usuario con los roles
+        var userWithRoles = userRepository.findById(user.get().getId());
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(userWithRoles.get());
         return new ResponseEntity<>(userResource, HttpStatus.CREATED);
 
     }
