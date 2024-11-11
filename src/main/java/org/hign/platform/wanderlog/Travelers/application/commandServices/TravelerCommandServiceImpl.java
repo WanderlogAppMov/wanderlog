@@ -4,9 +4,13 @@ import jakarta.transaction.Transactional;
 import org.hign.platform.wanderlog.Travelers.application.outboundservice.acl.ExternalIamService;
 import org.hign.platform.wanderlog.Travelers.domain.model.aggregates.Travelers;
 import org.hign.platform.wanderlog.Travelers.domain.model.commands.CreateTravelerCommand;
+import org.hign.platform.wanderlog.Travelers.domain.model.commands.UpdateTravelerCommand;
+import org.hign.platform.wanderlog.Travelers.domain.model.valueobjects.TravelerProfile;
 import org.hign.platform.wanderlog.Travelers.domain.services.TravelerCommandService;
 import org.hign.platform.wanderlog.Travelers.infrastructure.persistence.jpa.repositories.TravelersRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class TravelerCommandServiceImpl implements TravelerCommandService {
@@ -38,5 +42,19 @@ public class TravelerCommandServiceImpl implements TravelerCommandService {
         }
 
         return traveler.getTravelerId();
+    }
+
+    @Override
+    @Transactional
+    public Optional<Travelers> handle(UpdateTravelerCommand command) {
+        var travelerOptional = travelersRepository.findById(command.travelerId());
+        if (travelerOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        var traveler = travelerOptional.get();
+        var travelerProfile = new TravelerProfile(command.firstName(), command.lastName(), command.gender(), command.birthdate());
+        traveler.update(travelerProfile);
+        travelersRepository.save(traveler);
+        return Optional.of(traveler);
     }
 }

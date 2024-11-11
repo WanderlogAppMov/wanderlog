@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.hign.platform.wanderlog.Travelers.application.queryServices.TravelerQueryServiceImpl;
 import org.hign.platform.wanderlog.Travelers.domain.model.aggregates.Travelers;
 //import org.hign.platform.wanderlog.Travelers.domain.model.commands.AddTravelersCommand;
+import org.hign.platform.wanderlog.Travelers.domain.model.commands.UpdateTravelerCommand;
 import org.hign.platform.wanderlog.Travelers.domain.services.TravelerCommandService;
+import org.hign.platform.wanderlog.Travelers.domain.services.TravelerQueryService;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.resources.CreateTravelerResource;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.resources.TravelerResource;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.CreateTravelerCommandFromResourceAssembler;
@@ -23,7 +25,7 @@ import java.util.List;
 @Tag(name = "Travelers", description = "Travelers Endpoints")
 public class TravelersController {
     private final TravelerCommandService travelerCommandService;
-    private final TravelerQueryServiceImpl travelerQueryService;
+    private final TravelerQueryService travelerQueryService;
 
     /*
     @Autowired
@@ -67,6 +69,18 @@ public class TravelersController {
         }
     }*/
 
+    @GetMapping
+    ResponseEntity<List<TravelerResource>> getAllTravelers() {
+        var travelers = travelerQueryService.findAll();
+        if(travelers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelersResponse = travelers.get().stream()
+                .map(TravelerResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(travelersResponse);
+    }
+
     // POST new traveler
     @PostMapping
     public ResponseEntity<TravelerResource> createTraveler(@RequestBody CreateTravelerResource createTravelerResource) {
@@ -81,6 +95,15 @@ public class TravelersController {
         }
         var travelerResource = TravelerResourceFromEntityAssembler.toResourceFromEntity(traveler.get());
         return ResponseEntity.ok(travelerResource);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTraveler(@PathVariable Integer id, @RequestBody UpdateTravelerCommand command) {
+        if (!id.equals(command.travelerId())) {
+            return ResponseEntity.badRequest().body("Traveler ID in path and body must match");
+        }
+        var updatedTraveler = travelerCommandService.handle(command);
+        return updatedTraveler.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /*

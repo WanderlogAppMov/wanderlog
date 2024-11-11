@@ -6,6 +6,7 @@ import org.hign.platform.wanderlog.Travelers.domain.services.TravelerQueryServic
 import org.hign.platform.wanderlog.Travelers.infrastructure.persistence.jpa.repositories.TravelersRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +27,10 @@ public class TravelerQueryServiceImpl implements TravelerQueryService {
     public Optional<Travelers> findByUserId(Integer userId) {
         var id = new UserId(userId);
         return travelersRepository.findByUserId(id);
+    }
+
+    @Override
+    public Optional<List<Travelers>> findAll() {
+        return Optional.of(travelersRepository.findAll());
     }
 }

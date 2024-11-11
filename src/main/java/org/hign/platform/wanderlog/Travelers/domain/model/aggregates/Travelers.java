@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hign.platform.wanderlog.Travelers.domain.model.commands.CreateTravelerCommand;
+import org.hign.platform.wanderlog.Travelers.domain.model.commands.UpdateTravelerCommand;
 import org.hign.platform.wanderlog.Travelers.domain.model.valueobjects.TravelerProfile;
 import org.hign.platform.wanderlog.Travelers.domain.model.valueobjects.UserId;
 
@@ -37,6 +38,10 @@ public class Travelers {
 
     public Travelers() {
         this.travelerProfile = new TravelerProfile("", "", "", "");
+    }
+
+    public void update(TravelerProfile travelerProfile) {
+        this.travelerProfile = travelerProfile;
     }
 
     /*@Column(nullable = false, length = 100)

@@ -16,4 +16,6 @@ public interface TravelersRepository extends JpaRepository<Travelers, Integer> {
     boolean existsByName(@Param("name") String name);
 
     Optional<Travelers> findByUserId(UserId userId);
+
+    Optional<Travelers> findByTravelerId(Integer travelerId);
 }
