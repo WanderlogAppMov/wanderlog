@@ -1,31 +1,89 @@
 package org.hign.platform.wanderlog.TravelAgencies.interfaces.rest;
 
-import org.hign.platform.wanderlog.TravelAgencies.application.commandServices.AddTravelAgencyCommandService;
-import org.hign.platform.wanderlog.TravelAgencies.application.queryServices.GetTravelAgenciesQueryService;
-import org.hign.platform.wanderlog.TravelAgencies.domain.model.aggregates.TravelAgencies;
-import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.AddTravelAgencyCommand;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.tags.Tag;
+//import org.hign.platform.wanderlog.TravelAgencies.application.commandServices.AddTravelAgencyCommandService;
+//import org.hign.platform.wanderlog.TravelAgencies.application.queryServices.GetTravelAgenciesQueryService;
+//import org.hign.platform.wanderlog.TravelAgencies.domain.model.aggregates.TravelAgencies;
+//import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.AddTravelAgencyCommand;
+import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.UpdateTravelAgencyCommand;
+import org.hign.platform.wanderlog.TravelAgencies.domain.services.TravelAgencyCommandService;
+import org.hign.platform.wanderlog.TravelAgencies.domain.services.TravelAgencyQueryService;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.resources.CreateTravelAgencyResource;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.resources.TravelAgencyResource;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform.CreateTravelAgencyCommandFromResourceAssembler;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform.TravelAgencyResourceFromEntityAssembler;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/travelagencies")
+@RequestMapping("api/travelagencies")
+@Tag(name = "TravelAgencies", description = "Travel Agencies Endpoints")
 public class TravelAgenciesController {
 
+    private final TravelAgencyCommandService travelAgencyCommandService;
+    private final TravelAgencyQueryService travelAgencyQueryService;
+
+    public TravelAgenciesController(TravelAgencyCommandService travelAgencyCommandService, TravelAgencyQueryService travelAgencyQueryService) {
+        this.travelAgencyCommandService = travelAgencyCommandService;
+        this.travelAgencyQueryService = travelAgencyQueryService;
+    }
+
+
+    @GetMapping
+    ResponseEntity<List<TravelAgencyResource>> getAllTravelAgencies() {
+        var travelAgencies = travelAgencyQueryService.findAll();
+        if (travelAgencies.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelAgenciesResponse = travelAgencies.get().stream()
+                .map(TravelAgencyResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(travelAgenciesResponse);
+    }
+
+    @PostMapping
+    ResponseEntity<TravelAgencyResource> createTravelAgency(@RequestBody CreateTravelAgencyResource createTravelAgencyResource){
+        var createTravelAgencyCommand = CreateTravelAgencyCommandFromResourceAssembler.toCommandFromResource(createTravelAgencyResource);
+        var travelAgencyId = travelAgencyCommandService.handle(createTravelAgencyCommand);
+        if(travelAgencyId == 0){
+            return ResponseEntity.badRequest().build();
+        }
+        var travelAgency = travelAgencyQueryService.findById(travelAgencyId);
+        if(travelAgency.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        var travelAgencyResource = TravelAgencyResourceFromEntityAssembler.toResourceFromEntity(travelAgency.get());
+        return ResponseEntity.ok(travelAgencyResource);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTravelAgency(@PathVariable Integer id, @RequestBody UpdateTravelAgencyCommand command) {
+        if (!id.equals(command.agencyId())){
+            return ResponseEntity.badRequest().body("Travel Agency ID in path and body must match");
+        }
+        var updateTravelAgency = travelAgencyCommandService.handle(command);
+        return updateTravelAgency.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /*
     @Autowired
     private AddTravelAgencyCommandService addTravelAgencyCommandService;
 
     @Autowired
-    private GetTravelAgenciesQueryService getTravelAgenciesQueryService;
+    private GetTravelAgenciesQueryService getTravelAgenciesQueryService;*/
 
+    /*
     // GET all agencies
     @GetMapping
     public List<TravelAgencies> getAllAgencies() {
         return getTravelAgenciesQueryService.getAllAgencies();
     }
+
 
     // GET agency by ID
     @GetMapping("/{id}")
@@ -69,5 +127,5 @@ public class TravelAgenciesController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 }

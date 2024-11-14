@@ -5,15 +5,43 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.CreateTravelAgencyCommand;
+import org.hign.platform.wanderlog.TravelAgencies.domain.model.valueobjects.TravelAgencyProfile;
+import org.hign.platform.wanderlog.TravelAgencies.domain.model.valueobjects.UserAgencyId;
 
+
+//@Table(name = "travelagencies")
 @Entity
-@Table(name = "travelagencies")
+@Getter
+@Setter
 public class TravelAgencies {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer agencyId;
 
+    @Embedded
+    private TravelAgencyProfile travelAgencyProfile;
+
+    @Embedded
+    private UserAgencyId userId;
+
+    public TravelAgencies(CreateTravelAgencyCommand command, UserAgencyId userId){
+        this.travelAgencyProfile = new TravelAgencyProfile(command.organizationName(), command.repreFirstName(), command.repreLastName());
+        this.userId = userId;
+    }
+
+    public TravelAgencies(){
+        this.travelAgencyProfile = new TravelAgencyProfile("", "", "");
+    }
+
+    public void update(TravelAgencyProfile travelAgencyProfile){
+        this.travelAgencyProfile = travelAgencyProfile;
+    }
+
+    /*
     @Column(nullable = false, length = 255)
     @NotNull(message = "Organization name is mandatory")
     private String organizationName;
@@ -81,5 +109,5 @@ public class TravelAgencies {
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }*/
 }

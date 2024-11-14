@@ -1,5 +1,5 @@
 package org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform;
-
+/*
 import org.hign.platform.wanderlog.TravelAgencies.domain.model.aggregates.TravelAgencies;
 import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.AddTravelAgencyCommand;
 import org.springframework.stereotype.Component;
@@ -17,3 +17,4 @@ public class AddTravelAgencyCommandToAgencyTransformer {
         return agency;
     }
 }
+*/

@@ -1,5 +1,5 @@
 package org.hign.platform.wanderlog.TravelAgencies.application.commandServices;
-
+/*
 import org.hign.platform.wanderlog.TravelAgencies.domain.model.aggregates.TravelAgencies;
 import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.AddTravelAgencyCommand;
 import org.hign.platform.wanderlog.TravelAgencies.infrastructure.persistence.jpa.repositories.TravelAgenciesRepository;
@@ -42,3 +42,4 @@ public class AddTravelAgencyCommandService {
         travelAgenciesRepository.delete(agency);
     }
 }
+*/

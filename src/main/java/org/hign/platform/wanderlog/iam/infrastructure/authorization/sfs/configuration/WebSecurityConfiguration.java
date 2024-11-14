@@ -107,6 +107,7 @@ public class WebSecurityConfiguration {
                         .requestMatchers(
                                 "/api/authentication/**",
                                 "/api/travelers/**",
+                                "/api/travelagencies/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
