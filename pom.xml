@@ -119,6 +119,12 @@
             <artifactId>pluralize</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.1.1</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -128,6 +134,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>application.properties</include>
+                    <include>**/*</include> <!-- Esto incluirá todos los archivos -->
                 </includes>
                 <filtering>false</filtering>
             </resource>
