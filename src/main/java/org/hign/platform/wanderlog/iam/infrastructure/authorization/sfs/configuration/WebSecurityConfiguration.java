@@ -106,6 +106,8 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/api/authentication/**",
+                                "api/continents/**",
+                                "api/**",
                                 "/api/travelers/**",
                                 "/api/travelagencies/**",
                                 "/v3/api-docs/**",
