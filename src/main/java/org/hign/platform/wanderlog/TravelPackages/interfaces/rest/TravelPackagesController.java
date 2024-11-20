@@ -1,6 +1,7 @@
 package org.hign.platform.wanderlog.TravelPackages.interfaces.rest;
 
 import jakarta.persistence.*;
+import org.hign.platform.wanderlog.Firebase.FirebaseNotificationService;
 import org.hign.platform.wanderlog.TravelPackages.application.commandServices.AddTravelPackageCommandService;
 import org.hign.platform.wanderlog.TravelPackages.application.queryServices.GetTravelPackagesQueryService;
 import org.hign.platform.wanderlog.TravelPackages.domain.model.aggregates.TravelPackages;
@@ -23,6 +24,10 @@ public class TravelPackagesController {
     @Autowired
     private GetTravelPackagesQueryService getTravelPackagesQueryService;
 
+    @Autowired
+    private FirebaseNotificationService notificationService;
+
+
     // GET all travel packages
     @GetMapping
     public List<TravelPackages> getAllTravelPackages() {
@@ -44,7 +49,13 @@ public class TravelPackagesController {
     @PostMapping
     public ResponseEntity<String> addTravelPackage(@RequestBody AddTravelPackageCommand command) {
         try {
-            addTravelPackageCommandService.addTravelPackage(command);
+            var createdPackage = addTravelPackageCommandService.addTravelPackage(command);
+
+            // Enviar notificación después de crear el paquete
+            String title = "Nuevo Paquete de Viaje";
+            String body = "¡Se ha agregado el paquete a " + createdPackage.getDestination() + "!";
+            notificationService.sendNotification(title, body, "all");
+
             return new ResponseEntity<>("Travel package created successfully", HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
