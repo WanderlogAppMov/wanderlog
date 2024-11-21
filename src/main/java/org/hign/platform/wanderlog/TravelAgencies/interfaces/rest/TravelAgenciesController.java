@@ -9,11 +9,14 @@ import org.hign.platform.wanderlog.TravelAgencies.domain.model.commands.UpdateTr
 import org.hign.platform.wanderlog.TravelAgencies.domain.services.TravelAgencyCommandService;
 import org.hign.platform.wanderlog.TravelAgencies.domain.services.TravelAgencyQueryService;
 import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.resources.CreateTravelAgencyResource;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.resources.TravelAgencyProfileResource;
 import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.resources.TravelAgencyResource;
 import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform.CreateTravelAgencyCommandFromResourceAssembler;
+import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform.TravelAgencyProfileResourceFromEntityAssembler;
 import org.hign.platform.wanderlog.TravelAgencies.interfaces.rest.transform.TravelAgencyResourceFromEntityAssembler;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpStatus;
+import org.hign.platform.wanderlog.iam.interfaces.acl.IamContextFacade;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +29,33 @@ public class TravelAgenciesController {
 
     private final TravelAgencyCommandService travelAgencyCommandService;
     private final TravelAgencyQueryService travelAgencyQueryService;
+    private final IamContextFacade iamContextFacade;
 
-    public TravelAgenciesController(TravelAgencyCommandService travelAgencyCommandService, TravelAgencyQueryService travelAgencyQueryService) {
+    public TravelAgenciesController(TravelAgencyCommandService travelAgencyCommandService, TravelAgencyQueryService travelAgencyQueryService, IamContextFacade iamContextFacade) {
         this.travelAgencyCommandService = travelAgencyCommandService;
         this.travelAgencyQueryService = travelAgencyQueryService;
+        this.iamContextFacade = iamContextFacade;
+    }
+
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<TravelAgencyProfileResource> getTravelAgencyProfileById(@PathVariable Integer id) {
+        var traveler = travelAgencyQueryService.findById(id);
+        if (traveler.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelerProfileResource = TravelAgencyProfileResourceFromEntityAssembler.toResourceFromEntity(traveler.get(), iamContextFacade);
+        return ResponseEntity.ok(travelerProfileResource);
+    }
+
+    @GetMapping("/username/{username}/profile")
+    public ResponseEntity<TravelAgencyProfileResource> getTravelAgencyProfileByUsername(@PathVariable String username) {
+        var userId = iamContextFacade.fetchUserIdByUsername(username);
+        var traveler = travelAgencyQueryService.findByUserId(userId);
+        if (traveler.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelerProfileResource = TravelAgencyProfileResourceFromEntityAssembler.toResourceFromEntity(traveler.get(), iamContextFacade);
+        return ResponseEntity.ok(travelerProfileResource);
     }
 
 
