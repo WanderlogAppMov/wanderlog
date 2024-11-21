@@ -10,9 +10,12 @@ import org.hign.platform.wanderlog.Travelers.domain.model.commands.UpdateTravele
 import org.hign.platform.wanderlog.Travelers.domain.services.TravelerCommandService;
 import org.hign.platform.wanderlog.Travelers.domain.services.TravelerQueryService;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.resources.CreateTravelerResource;
+import org.hign.platform.wanderlog.Travelers.interfaces.rest.resources.TravelerProfileResource;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.resources.TravelerResource;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.CreateTravelerCommandFromResourceAssembler;
+import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.TravelerProfileResourceFromEntityAssembler;
 import org.hign.platform.wanderlog.Travelers.interfaces.rest.transform.TravelerResourceFromEntityAssembler;
+import org.hign.platform.wanderlog.iam.interfaces.acl.IamContextFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,7 @@ import java.util.List;
 public class TravelersController {
     private final TravelerCommandService travelerCommandService;
     private final TravelerQueryService travelerQueryService;
+    private final IamContextFacade iamContextFacade;
 
     /*
     @Autowired
@@ -34,9 +38,10 @@ public class TravelersController {
     @Autowired
     private GetTravelersQueryService getTravelersQueryService;*/
 
-    public TravelersController(TravelerCommandService travelerCommandService, TravelerQueryServiceImpl travelerQueryService) {
+    public TravelersController(TravelerCommandService travelerCommandService, TravelerQueryServiceImpl travelerQueryService, IamContextFacade iamContextFacade) {
         this.travelerCommandService = travelerCommandService;
         this.travelerQueryService = travelerQueryService;
+        this.iamContextFacade = iamContextFacade;
     }
 
 /*
@@ -79,6 +84,27 @@ public class TravelersController {
                 .map(TravelerResourceFromEntityAssembler::toResourceFromEntity)
                 .collect(java.util.stream.Collectors.toList());
         return ResponseEntity.ok(travelersResponse);
+    }
+
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<TravelerProfileResource> getTravelerProfileById(@PathVariable Integer id) {
+        var traveler = travelerQueryService.findById(id);
+        if (traveler.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelerProfileResource = TravelerProfileResourceFromEntityAssembler.toResourceFromEntity(traveler.get(), iamContextFacade);
+        return ResponseEntity.ok(travelerProfileResource);
+    }
+
+    @GetMapping("/username/{username}/profile")
+    public ResponseEntity<TravelerProfileResource> getTravelerProfileByUsername(@PathVariable String username) {
+        var userId = iamContextFacade.fetchUserIdByUsername(username);
+        var traveler = travelerQueryService.findByUserId(userId);
+        if (traveler.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var travelerProfileResource = TravelerProfileResourceFromEntityAssembler.toResourceFromEntity(traveler.get(), iamContextFacade);
+        return ResponseEntity.ok(travelerProfileResource);
     }
 
     // POST new traveler
