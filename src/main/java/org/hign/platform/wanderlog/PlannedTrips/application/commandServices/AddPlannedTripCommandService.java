@@ -3,6 +3,7 @@ package org.hign.platform.wanderlog.PlannedTrips.application.commandServices;
 import org.hign.platform.wanderlog.PlannedTrips.domain.model.aggregates.PlannedTrips;
 import org.hign.platform.wanderlog.PlannedTrips.domain.model.commands.AddPlannedTripCommand;
 import org.hign.platform.wanderlog.PlannedTrips.infrastructure.persistence.jpa.repositories.PlannedTripsRepository;
+import org.hign.platform.wanderlog.TravelPackages.domain.model.aggregates.TravelPackages;
 import org.hign.platform.wanderlog.TravelPackages.infrastructure.persistence.jpa.repositories.TravelPackagesRepository;
 import org.hign.platform.wanderlog.Travelers.infrastructure.persistence.jpa.repositories.TravelersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +23,28 @@ public class AddPlannedTripCommandService {
 
     // Método para agregar un PlannedTrip
     public PlannedTrips addPlannedTrip(AddPlannedTripCommand command) {
+        // Obtener y validar el paquete de viaje
+        TravelPackages travelPackage = travelPackagesRepository.findById(command.getTravelPackageId())
+                .orElseThrow(() -> new IllegalArgumentException("Travel package not found"));
+
+        // Verificar si el paquete ya está reservado
+        if (travelPackage.getReserved()) {
+            throw new IllegalStateException("Travel package is already reserved");
+        }
+
+        // Crear y guardar el nuevo PlannedTrip
         PlannedTrips plannedTrip = new PlannedTrips();
         plannedTrip.setTraveler(travelersRepository.findById(command.getTravelerId())
                 .orElseThrow(() -> new IllegalArgumentException("Traveler not found")));
-        plannedTrip.setTravelPackage(travelPackagesRepository.findById(command.getTravelPackageId())
-                .orElseThrow(() -> new IllegalArgumentException("Travel package not found")));
+        plannedTrip.setTravelPackage(travelPackage);
         plannedTrip.setNumberOfStudents(command.getNumberOfStudents());
         plannedTrip.setTentativeDate(command.getTentativeDate());
         plannedTrip.setBudget(command.getBudget());
         plannedTrip.setStatus(PlannedTrips.Status.valueOf(command.getStatus()));
+
+        // Marcar el paquete de viaje como reservado
+        travelPackage.setReserved(true);
+        travelPackagesRepository.save(travelPackage); // Guardar el cambio en el paquete
 
         return plannedTripsRepository.save(plannedTrip);
     }

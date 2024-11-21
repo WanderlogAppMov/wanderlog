@@ -46,7 +46,10 @@ public class TravelPackages {
     @Column(nullable = false, length = 100)
     private String continent;
 
-    // Getters and Setters
+    @Column(nullable = false)
+    private Boolean reserved = false; // Indica si el paquete está reservado
+
+    // Getters y Setters
 
     public Integer getTravelPackageId() {
         return travelPackageId;
@@ -118,5 +121,17 @@ public class TravelPackages {
 
     public void setContinent(String continent) {
         this.continent = continent;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
+    }
+
+    public void reservePackage() {
+        this.reserved = true;
     }
 }
